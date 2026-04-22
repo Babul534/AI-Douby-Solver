@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Doubt Solver - Indian Students ke liye</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-flag">
+      <span class="flag-saffron"></span>
+      <span class="flag-white"></span>
+      <span class="flag-green"></span>
+    </div>
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+        <div>
+          <h1 class="logo-title">AI Doubt Solver</h1>
+          <p class="logo-sub">Bharat ke Students ke liye</p>
+        </div>
+      </div>
+      <div class="header-badge">Free • Fast • Hindi mein</div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Ask Doubt Card -->
+    <section class="card ask-card">
+      <div class="card-header">
+        <span class="card-icon">❓</span>
+        <h2>Apna Doubt Poochho</h2>
+      </div>
+
+      <!-- Subject Selector -->
+      <div class="form-group">
+        <label for="subject">Subject Chunno</label>
+        <div class="select-wrapper">
+          <select id="subject">
+            <option value="">-- Subject Select Karo --</option>
+            <option value="Physics">Physics (Bhautiki)</option>
+            <option value="Chemistry">Chemistry (Rasayan Vigyan)</option>
+            <option value="Mathematics">Mathematics (Ganit)</option>
+            <option value="Biology">Biology (Jeev Vigyan)</option>
+            <option value="History">History (Itihas)</option>
+            <option value="Geography">Geography (Bhugol)</option>
+            <option value="Economics">Economics (Arthashastra)</option>
+            <option value="Social Science">Social Science (Samajik Vigyan)</option>
+          </select>
+          <span class="select-arrow">▼</span>
+        </div>
+      </div>
+
+      <!-- Text Input -->
+      <div class="form-group">
+        <label for="questionInput">Apna Doubt Likho <span class="lang-note">(English / Hindi / Telugu)</span></label>
+        <textarea
+          id="questionInput"
+          placeholder="Yahan apna question likhiye... jaise: Newton ka pehla niyam kya hai?"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- Action Buttons Row -->
+      <div class="action-buttons">
+        <button id="speakBtn" class="btn btn-secondary" title="Voice se doubt bolo">
+          <span class="btn-icon">🎤</span>
+          <span>Speak Doubt</span>
+        </button>
+        <label class="btn btn-secondary" title="Photo upload karo">
+          <span class="btn-icon">📷</span>
+          <span>Upload Photo</span>
+          <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" hidden />
+        </label>
+      </div>
+
+      <!-- Photo Preview -->
+      <div id="photoPreview" class="photo-preview hidden">
+        <img id="previewImg" src="" alt="Uploaded question" />
+        <button id="removePhoto" class="remove-photo">✕ Remove</button>
+      </div>
+
+      <!-- Get Answer Button -->
+      <button id="getAnswerBtn" class="btn btn-primary">
+        <span class="btn-icon">✨</span>
+        <span>Get Answer!</span>
+      </button>
+
+      <!-- Loading -->
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Tutor ji soch rahe hain... <span id="loadingDots">.</span></p>
+      </div>
+    </section>
+
+    <!-- Answer Card -->
+    <section id="answerCard" class="card answer-card hidden">
+      <div class="card-header">
+        <span class="card-icon">💡</span>
+        <h2>Jawab</h2>
+      </div>
+
+      <div id="extractedQ" class="extracted-q hidden">
+        <p class="extracted-label">Photo se samjha gaya question:</p>
+        <p id="extractedText"></p>
+      </div>
+
+      <div id="answerContent" class="answer-content"></div>
+
+      <!-- Answer Action Buttons -->
+      <div class="answer-actions">
+        <button id="listenBtn" class="btn btn-secondary">
+          <span class="btn-icon">🔊</span>
+          <span>Listen to Answer</span>
+        </button>
+        <button id="stopListenBtn" class="btn btn-secondary hidden">
+          <span class="btn-icon">⏹</span>
+          <span>Stop</span>
+        </button>
+        <button id="saveDoubtBtn" class="btn btn-save">
+          <span class="btn-icon">💾</span>
+          <span>Save Doubt</span>
+        </button>
+      </div>
+
+      <div id="saveMsg" class="save-msg hidden">Doubt save ho gaya!</div>
+    </section>
+
+    <!-- Saved Doubts Section -->
+    <section class="card saved-card">
+      <div class="card-header">
+        <span class="card-icon">📚</span>
+        <h2>My Saved Doubts</h2>
+        <button id="clearAllBtn" class="btn-clear-all">Sab Clear Karo</button>
+      </div>
+      <div id="savedDoubtsContainer">
+        <p class="empty-state">Abhi koi saved doubt nahi hai. Pehle koi doubt solve karo!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Jai Hind! Made with ❤️ for Indian Students</p>
+    <div class="footer-flag">
+      <span></span><span></span><span></span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

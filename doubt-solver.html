@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doubt Solver - AI Doubt Solver for Indian Students</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #FF9933 0%, #ffffff 50%, #138808 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .language-pills {
+            display: inline-flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-pill {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid #FF9933;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .language-pill:hover, .language-pill.active {
+            background: #FF9933;
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #138808;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Subject Selector */
+        .subject-selector {
+            margin-bottom: 25px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #FF9933 #f0f0f0;
+        }
+
+        .subject-selector::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .subject-selector::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        .subject-selector::-webkit-scrollbar-thumb {
+            background: #FF9933;
+            border-radius: 3px;
+        }
+
+        .subject-pills {
+            display: flex;
+            gap: 12px;
+            padding: 5px;
+            min-width: max-content;
+        }
+
+        .subject-pill {
+            padding: 12px 24px;
+            background: white;
+            border: 3px solid #FF9933;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject-pill:hover, .subject-pill.active {
+            background: #FF9933;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 153, 51, 0.4);
+        }
+
+        /* Input Area */
+        .input-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .doubt-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            background: #fafafa;
+        }
+
+        .doubt-input:focus {
+            outline: none;
+            border-color: #FF9933;
+            background: white;
+        }
+
+        .doubt-input::placeholder {
+            color: #999;
+            font-weight: 500;
+        }
+
+        .input-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .input-btn {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .voice-btn {
+            background: #138808;
+            color: white;
+        }
+
+        .voice-btn:hover {
+            background: #0f6b06;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(19, 136, 8, 0.4);
+        }
+
+        .photo-btn {
+            background: #FF9933;
+            color: white;
+        }
+
+        .photo-btn:hover {
+            background: #e68529;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 153, 51, 0.4);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #138808 0%, #0f6b06 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(19, 136, 8, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(19, 136, 8, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Answer Card */
+        .answer-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .answer-card.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .answer-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #138808;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .answer-step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 5px solid #FF9933;
+            border-radius: 10px;
+        }
+
+        .step-number {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #FF9933;
+            margin-bottom: 8px;
+        }
+
+        .step-content {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Bottom Action Buttons */
+        .bottom-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 18px 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .listen-btn {
+            background: #138808;
+            color: white;
+        }
+
+        .listen-btn:hover {
+            background: #0f6b06;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(19, 136, 8, 0.4);
+        }
+
+        .save-btn {
+            background: #FF9933;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #e68529;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 153, 51, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .app-name {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .subject-pill {
+                padding: 10px 18px;
+                font-size: 1rem;
+            }
+
+            .doubt-input {
+                font-size: 1.1rem;
+                min-height: 120px;
+                padding: 15px;
+            }
+
+            .input-btn, .action-btn {
+                font-size: 1rem;
+                padding: 12px 16px;
+            }
+
+            .submit-btn {
+                font-size: 1.2rem;
+                padding: 18px;
+            }
+
+            .answer-title {
+                font-size: 1.3rem;
+            }
+
+            .step-content {
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+            }
+
+            .input-buttons {
+                max-width: 500px;
+                margin: 20px auto 0;
+            }
+
+            .bottom-actions {
+                max-width: 500px;
+                margin: 0 auto 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <div class="language-pills">
+                <button class="language-pill active" data-lang="hi">हिन्दी</button>
+                <button class="language-pill" data-lang="te">తెలుగు</button>
+                <button class="language-pill" data-lang="en">English</button>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-name">Doubt Solver</h1>
+            <p class="tagline" data-hi="Har sawal ka jawab - AI ke saath" data-te="ప్రతి ప్రశ్నకు జవాబు - AIతో కలిసి" data-en="Every question's answer - with AI">Har sawal ka jawab - AI ke saath</p>
+        </header>
+
+        <!-- Subject Selector -->
+        <div class="subject-selector">
+            <div class="subject-pills">
+                <button class="subject-pill active">Physics</button>
+                <button class="subject-pill">Chemistry</button>
+                <button class="subject-pill">Maths</button>
+                <button class="subject-pill">Biology</button>
+                <button class="subject-pill">History</button>
+                <button class="subject-pill">Geography</button>
+                <button class="subject-pill">Civics</button>
+                <button class="subject-pill">Economics</button>
+                <button class="subject-pill">English</button>
+                <button class="subject-pill">Hindi</button>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-section">
+            <textarea 
+                class="doubt-input" 
+                placeholder="Apna doubt yahan likho..."
+                data-hi="Apna doubt yahan likho..."
+                data-te="మీ సందేహాన్ని ఇక్కడ రాయండి..."
+                data-en="Write your doubt here..."
+                id="doubtInput"
+            ></textarea>
+            <div class="input-buttons">
+                <button class="input-btn voice-btn" onclick="startVoiceInput()">
+                    <span>?</span> <span data-hi="Bol ke poocho" data-te="మాట్లాడి అడగండి" data-en="Ask by voice">Bol ke poocho</span>
+                </button>
+                <button class="input-btn photo-btn" onclick="uploadPhoto()">
+                    <span>?</span> <span data-hi="Photo se poocho" data-te="ఫోటోతో అడగండి" data-en="Ask by photo">Photo se poocho</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="submit-btn" onclick="getAnswer()">
+            <span data-hi="Jawab Do" data-te="జవాబు ఇవ్వండి" data-en="Get Answer">Jawab Do</span>
+        </button>
+
+        <!-- Answer Card -->
+        <div class="answer-card" id="answerCard">
+            <h2 class="answer-title" data-hi="AI ka Jawab" data-te="AI జవాబు" data-en="AI's Answer">AI ka Jawab</h2>
+            <div class="answer-step">
+                <div class="step-number" data-hi="Step 1:" data-te="మెట్టు 1:" data-en="Step 1:">Step 1:</div>
+                <div class="step-content" data-hi="Yahan pe pehla step explain kiya jayega..." data-te="ఇక్కడ మొదటి మెట్టు వివరించబడుతుంది..." data-en="Here the first step will be explained...">Yahan pe pehla step explain kiya jayega...</div>
+            </div>
+            <div class="answer-step">
+                <div class="step-number" data-hi="Step 2:" data-te="మెట్టు 2:" data-en="Step 2:">Step 2:</div>
+                <div class="step-content" data-hi="Dusra step detailed explanation ke saath..." data-te="రెండవ మెట్టు వివరణతో..." data-en="Second step with detailed explanation...">Dusra step detailed explanation ke saath...</div>
+            </div>
+            <div class="answer-step">
+                <div class="step-number" data-hi="Step 3:" data-te="మెట్టు 3:" data-en="Step 3:">Step 3:</div>
+                <div class="step-content" data-hi="Final answer aur conclusion..." data-te="చివరి జవాబు మరియు ముగింపు..." data-en="Final answer and conclusion...">Final answer aur conclusion...</div>
+            </div>
+        </div>
+
+        <!-- Bottom Action Buttons -->
+        <div class="bottom-actions">
+            <button class="action-btn listen-btn" onclick="listenAnswer()">
+                <span>?</span> <span data-hi="Suno" data-te="వినండి" data-en="Listen">Suno</span>
+            </button>
+            <button class="action-btn save-btn" onclick="saveAnswer()">
+                <span>?</span> <span data-hi="Save karo" data-te="సేవ్ చేయండి" data-en="Save">Save karo</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Global language variable
+        let currentLanguage = 'hi';
+
+        // Language switching functionality
+        document.querySelectorAll('.language-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.language-pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                currentLanguage = this.getAttribute('data-lang');
+                updateLanguage();
+            });
+        });
+
+        // Update language function
+        function updateLanguage() {
+            // Update all elements with data attributes
+            document.querySelectorAll('[data-hi]').forEach(element => {
+                const text = element.getAttribute(`data-${currentLanguage}`);
+                if (text && element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                    element.placeholder = text;
+                } else if (text) {
+                    element.textContent = text;
+                }
+            });
+
+            // Update document lang attribute
+            document.documentElement.lang = currentLanguage === 'hi' ? 'hi' : currentLanguage === 'te' ? 'te' : 'en';
+        }
+
+        // Subject selection
+        document.querySelectorAll('.subject-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.subject-pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Get Answer function
+        async function getAnswer() {
+            const doubtInput = document.getElementById('doubtInput');
+            const answerCard = document.getElementById('answerCard');
+            const subjectEl = document.querySelector('.subject-pill.active');
+            
+            const question = doubtInput.value.trim();
+            const subject = subjectEl ? subjectEl.textContent : 'General';
+            
+            if (question === '') {
+                const messages = {
+                    'hi': 'Please enter your doubt first!',
+                    'te': 'దయచేసి ముందుగా మీ సందేహాన్ని నమోదు చేయండి!',
+                    'en': 'Please enter your doubt first!'
+                };
+                alert(messages[currentLanguage]);
+                return;
+            }
+
+            // Show loading
+            showLoading();
+
+            try {
+                let data;
+
+                // Call API based on whether we have an image or just text
+                const response = await fetch('/api/ask-text', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject, question })
+                });
+                
+                data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Server error');
+                }
+
+                // Update answer content
+                const answerTitle = document.querySelector('.answer-title');
+                const answerSteps = document.querySelectorAll('.step-content');
+                
+                answerTitle.textContent = data.answer;
+                
+                // Split answer into steps (simple approach)
+                const steps = data.answer.split(/\d+\./).filter(step => step.trim());
+                answerSteps.forEach((stepEl, index) => {
+                    if (steps[index]) {
+                        stepEl.textContent = steps[index];
+                    }
+                });
+
+                // Show answer card with animation
+                answerCard.classList.add('show');
+                
+                // Scroll to answer
+                answerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (err) {
+                const messages = {
+                    'hi': 'Error: ' + err.message,
+                    'te': 'లోపం: ' + err.message,
+                    'en': 'Error: ' + err.message
+                };
+                alert(messages[currentLanguage]);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Loading functions
+        function showLoading() {
+            const loadingEl = document.createElement('div');
+            loadingEl.id = 'loading';
+            loadingEl.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #138808;
+                color: white;
+                padding: 20px 30px;
+                border-radius: 15px;
+                font-size: 1.2rem;
+                font-weight: 700;
+                z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            `;
+            loadingEl.textContent = 'Processing...';
+            document.body.appendChild(loadingEl);
+        }
+
+        function hideLoading() {
+            const loadingEl = document.getElementById('loading');
+            if (loadingEl) {
+                loadingEl.remove();
+            }
+        }
+
+        // Voice input function
+        function startVoiceInput() {
+            console.log('Starting voice input...');
+            console.log('Current language:', currentLanguage);
+            console.log('User agent:', navigator.userAgent);
+            console.log('Protocol:', window.location.protocol);
+            console.log('Hostname:', window.location.hostname);
+            
+            // Check if running on HTTPS or localhost
+            const isSecure = window.location.protocol === 'https:' || 
+                           window.location.hostname === 'localhost' || 
+                           window.location.hostname === '127.0.0.1';
+            
+            if (!isSecure) {
+                console.log('Security check failed');
+                const messages = {
+                    'hi': 'Voice input requires HTTPS or localhost. Please use https:// or run on localhost.',
+                    'te': 'Voice input కోసం HTTPS లేదా localhost అవసరం. https:// ఉపయోగించండి లేదా localhostలో రన్ చేయండి.',
+                    'en': 'Voice input requires HTTPS or localhost. Please use https:// or run on localhost.'
+                };
+                alert(messages[currentLanguage]);
+                return;
+            }
+            
+            // Check browser support
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            console.log('SpeechRecognition available:', !!SpeechRecognition);
+            
+            if (!SpeechRecognition) {
+                console.log('Browser does not support speech recognition');
+                const messages = {
+                    'hi': 'Voice input is not supported in your browser. Please try Chrome, Edge, or Firefox.',
+                    'te': 'Voice input మీ బ్రౌజర్లో మద్దతు లేదు. Chrome, Edge, లేదా Firefox ప్రయత్నించండి.',
+                    'en': 'Voice input is not supported in your browser. Please try Chrome, Edge, or Firefox.'
+                };
+                alert(messages[currentLanguage]);
+                return;
+            }
+            
+            // Request microphone permission first
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function(stream) {
+                    console.log('Microphone permission granted');
+                    // Stop the stream immediately, we just needed permission
+                    stream.getTracks().forEach(track => track.stop());
+                    
+                    // Now start speech recognition
+                    startSpeechRecognition(SpeechRecognition);
+                })
+                .catch(function(err) {
+                    console.error('Microphone permission denied:', err);
+                    const messages = {
+                        'hi': 'Microphone permission denied. Please allow microphone access in your browser settings.',
+                        'te': 'మైక్రోఫోన్ అనుమతి తిరస్కరించబడింది. దయచేసి మీ బ్రౌజర్ సెట్టింగ్లలో మైక్రోఫోన్ యాక్సెస్ను అనుమతించండి.',
+                        'en': 'Microphone permission denied. Please allow microphone access in your browser settings.'
+                    };
+                    alert(messages[currentLanguage]);
+                });
+        }
+        
+        // Separate function for speech recognition
+        function startSpeechRecognition(SpeechRecognition) {
+            try {
+                const recognition = new SpeechRecognition();
+                
+                // Set language based on current selection
+                const langCode = currentLanguage === 'hi' ? 'hi-IN' : currentLanguage === 'te' ? 'te-IN' : 'en-US';
+                recognition.lang = langCode;
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+                
+                console.log('Recognition config:', {
+                    lang: recognition.lang,
+                    continuous: recognition.continuous,
+                    interimResults: recognition.interimResults
+                });
+                
+                recognition.onstart = function() {
+                    console.log('Voice recognition started successfully');
+                    const messages = {
+                        'hi': '🎤 Voice input started. Ab bolna shuru karein...',
+                        'te': '🎤 Voice input started. ఇప్పుడు మాట్లాడండి...',
+                        'en': '🎤 Voice input started. Speak now...'
+                    };
+                    showVoiceFeedback(messages[currentLanguage]);
+                };
+                
+                recognition.onresult = function(event) {
+                    console.log('Voice recognition result received:', event);
+                    const transcript = event.results[0][0].transcript;
+                    const confidence = event.results[0][0].confidence;
+                    console.log('Voice result:', transcript, 'Confidence:', confidence);
+                    document.getElementById('doubtInput').value = transcript;
+                    hideVoiceFeedback();
+                    
+                    const successMessages = {
+                        'hi': '✅ Voice input successful!',
+                        'te': '✅ Voice input విజయవంతంగా అయింది!',
+                        'en': '✅ Voice input successful!'
+                    };
+                    showSuccessMessage(successMessages[currentLanguage]);
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Voice recognition error:', event.error, event);
+                    hideVoiceFeedback();
+                    
+                    const errorMessages = {
+                        'hi': '❌ Voice input error: ' + getErrorDescription(event.error, 'hi'),
+                        'te': '❌ Voice input లోపం: ' + getErrorDescription(event.error, 'te'),
+                        'en': '❌ Voice input error: ' + getErrorDescription(event.error, 'en')
+                    };
+                    alert(errorMessages[currentLanguage]);
+                };
+                
+                recognition.onend = function() {
+                    console.log('Voice recognition ended');
+                    hideVoiceFeedback();
+                };
+                
+                recognition.start();
+                console.log('Speech recognition started');
+            } catch (error) {
+                console.error('Voice recognition initialization error:', error);
+                const messages = {
+                    'hi': 'Voice input failed to initialize: ' + error.message,
+                    'te': 'Voice input ప్రారంభించడం విఫలమైంది: ' + error.message,
+                    'en': 'Voice input failed to initialize: ' + error.message
+                };
+                alert(messages[currentLanguage]);
+            }
+        }
+        
+        // Helper function to get user-friendly error descriptions
+        function getErrorDescription(error, lang) {
+            const descriptions = {
+                'hi': {
+                    'not-allowed': 'Microphone permission denied. Please allow microphone access.',
+                    'no-speech': 'No speech detected. Please try again.',
+                    'network': 'Network error. Please check your internet connection.',
+                    'service-not-allowed': 'Speech recognition service not allowed.'
+                },
+                'te': {
+                    'not-allowed': 'మైక్రోఫోన్ అనుమతి తిరస్కరించబడింది. దయచేసి మైక్రోఫోన్ యాక్సెస్ను అనుమతించండి.',
+                    'no-speech': 'ప్రసంగం గుర్తించబడలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.',
+                    'network': 'నెట్వర్క్ లోపం. దయచేసి మీ ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేయండి.',
+                    'service-not-allowed': 'Speech recognition సేవ అనుమతించబడలేదు.'
+                },
+                'en': {
+                    'not-allowed': 'Microphone permission denied. Please allow microphone access.',
+                    'no-speech': 'No speech detected. Please try again.',
+                    'network': 'Network error. Please check your internet connection.',
+                    'service-not-allowed': 'Speech recognition service not allowed.'
+                }
+            };
+            
+            return descriptions[lang][error] || error;
+        }
+        
+        // Show voice feedback
+        function showVoiceFeedback(message) {
+            // Remove existing feedback if any
+            hideVoiceFeedback();
+            
+            const feedback = document.createElement('div');
+            feedback.id = 'voice-feedback';
+            feedback.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #138808;
+                color: white;
+                padding: 20px 30px;
+                border-radius: 15px;
+                font-size: 1.2rem;
+                font-weight: 700;
+                z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                animation: pulse 1.5s infinite;
+            `;
+            feedback.textContent = message;
+            document.body.appendChild(feedback);
+        }
+        
+        // Hide voice feedback
+        function hideVoiceFeedback() {
+            const feedback = document.getElementById('voice-feedback');
+            if (feedback) {
+                feedback.remove();
+            }
+        }
+        
+        // Show success message
+        function showSuccessMessage(message) {
+            const success = document.createElement('div');
+            success.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #138808;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 1rem;
+                font-weight: 600;
+                z-index: 1000;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+                animation: slideIn 0.3s ease;
+            `;
+            success.textContent = message;
+            document.body.appendChild(success);
+            
+            setTimeout(() => {
+                success.remove();
+            }, 3000);
+        }
+
+        // Photo upload function
+        function uploadPhoto() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const messages = {
+                        'hi': 'Photo uploaded: ' + file.name,
+                        'te': 'ఫోటో అప్‌లోడ్ చేయబడింది: ' + file.name,
+                        'en': 'Photo uploaded: ' + file.name
+                    };
+                    alert(messages[currentLanguage]);
+                    // Here you would typically process the image
+                    const uploadMessages = {
+                        'hi': 'Photo uploaded: ' + file.name + ' (Image processing would happen here)',
+                        'te': 'ఫోటో అప్‌లోడ్ చేయబడింది: ' + file.name + ' (ఇమేజ్ ప్రాసెసింగ్ ఇక్కడ జరుగుతుంది)',
+                        'en': 'Photo uploaded: ' + file.name + ' (Image processing would happen here)'
+                    };
+                    document.getElementById('doubtInput').value = uploadMessages[currentLanguage];
+                }
+            };
+            input.click();
+        }
+
+        // Listen to answer function
+        function listenAnswer() {
+            console.log('Listen to answer requested');
+            console.log('Speech synthesis available:', 'speechSynthesis' in window);
+            
+            const answerCard = document.getElementById('answerCard');
+            console.log('Answer card element:', answerCard);
+            console.log('Answer card classes:', answerCard.className);
+            console.log('Answer card display:', window.getComputedStyle(answerCard).display);
+            
+            // Check if answer card is visible by checking display style or class
+            const isVisible = answerCard.classList.contains('show') || 
+                           window.getComputedStyle(answerCard).display !== 'none';
+            
+            console.log('Is answer card visible?', isVisible);
+            
+            if (!isVisible) {
+                console.log('Answer card not visible');
+                const messages = {
+                    'hi': 'Please get an answer first!',
+                    'te': 'దయచేసి ముందుగా జవాబు పొందండి!',
+                    'en': 'Please get an answer first!'
+                };
+                alert(messages[currentLanguage]);
+                return;
+            }
+
+            if ('speechSynthesis' in window) {
+                console.log('Starting speech synthesis');
+                
+                // Get the actual answer content from the answer title element
+                const answerTitle = document.querySelector('.answer-title');
+                const answerContent = answerTitle ? answerTitle.textContent : answerCard.innerText;
+                console.log('Answer title element:', answerTitle);
+                console.log('Answer content to speak:', answerContent);
+                console.log('Answer content length:', answerContent.length);
+                
+                // Check if already speaking
+                if (speechSynthesis.speaking) {
+                    console.log('Already speaking, stopping...');
+                    speechSynthesis.cancel();
+                    return;
+                }
+                
+                // Get available voices
+                const voices = speechSynthesis.getVoices();
+                console.log('Available voices:', voices.length);
+                
+                // Wait for voices to be loaded if needed
+                if (voices.length === 0) {
+                    speechSynthesis.onvoiceschanged = function() {
+                        speakAnswer(answerContent);
+                    };
+                    speechSynthesis.getVoices();
+                } else {
+                    speakAnswer(answerContent);
+                }
+            } else {
+                console.log('Speech synthesis not supported');
+                const messages = {
+                    'hi': 'Text-to-speech is not supported in your browser.',
+                    'te': 'Text-to-speech మీ బ్రౌజర్లో మద్దతు లేదు.',
+                    'en': 'Text-to-speech is not supported in your browser.'
+                };
+                alert(messages[currentLanguage]);
+            }
+        }
+        
+        // Separate function to speak the answer
+        function speakAnswer(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Set language based on current selection
+            const langCode = currentLanguage === 'hi' ? 'hi-IN' : currentLanguage === 'te' ? 'te-IN' : 'en-US';
+            utterance.lang = langCode;
+            
+            // Find appropriate voice
+            const voices = speechSynthesis.getVoices();
+            console.log('Voices after loading:', voices.length);
+            
+            // Try to find a voice that matches the language
+            let selectedVoice = null;
+            for (let voice of voices) {
+                if (voice.lang.startsWith(currentLanguage === 'hi' ? 'hi' : currentLanguage === 'te' ? 'te' : 'en')) {
+                    selectedVoice = voice;
+                    console.log('Selected voice:', voice.name, voice.lang);
+                    break;
+                }
+            }
+            
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+            
+            // Set speech parameters
+            utterance.rate = 0.9; // Slightly slower for better understanding
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            console.log('Speaking with settings:', {
+                lang: utterance.lang,
+                voice: utterance.voice?.name || 'default',
+                rate: utterance.rate,
+                pitch: utterance.pitch
+            });
+            
+            // Event handlers
+            utterance.onstart = function() {
+                console.log('Speech synthesis started');
+                const messages = {
+                    'hi': '🔊 Answer is being read...',
+                    'te': '🔊 జవాబు చదవబడుతోంది...',
+                    'en': '🔊 Answer is being read...'
+                };
+                showVoiceFeedback(messages[currentLanguage]);
+            };
+            
+            utterance.onend = function() {
+                console.log('Speech synthesis ended');
+                hideVoiceFeedback();
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('Speech synthesis error:', event);
+                hideVoiceFeedback();
+                const messages = {
+                    'hi': '❌ Error reading answer: ' + event.error,
+                    'te': '❌ జవాబు చదవడంలో లోపం: ' + event.error,
+                    'en': '❌ Error reading answer: ' + event.error
+                };
+                alert(messages[currentLanguage]);
+            };
+            
+            // Start speaking
+            speechSynthesis.speak(utterance);
+        }
+
+        // Save answer function
+        function saveAnswer() {
+            const answerCard = document.getElementById('answerCard');
+            if (!answerCard.classList.contains('show')) {
+                const messages = {
+                    'hi': 'Please get an answer first!',
+                    'te': 'దయచేసి ముందుగా జవాబు పొందండి!',
+                    'en': 'Please get an answer first!'
+                };
+                alert(messages[currentLanguage]);
+                return;
+            }
+
+            // Create a simple text content to save
+            const answerContent = answerCard.innerText;
+            const blob = new Blob([answerContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'doubt-answer.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            const messages = {
+                'hi': 'Answer saved successfully!',
+                'te': 'జవాబు విజయవంతంగా సేవ్ చేయబడింది!',
+                'en': 'Answer saved successfully!'
+            };
+            alert(messages[currentLanguage]);
+        }
+
+        // Add emoji icons to buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const voiceBtn = document.querySelector('.voice-btn span:first-child');
+            const photoBtn = document.querySelector('.photo-btn span:first-child');
+            const listenBtn = document.querySelector('.listen-btn span:first-child');
+            const saveBtn = document.querySelector('.save-btn span:first-child');
+            
+            voiceBtn.textContent = '🎤';
+            photoBtn.textContent = '📷';
+            listenBtn.textContent = '🔊';
+            saveBtn.textContent = '💾';
+            
+            // Test speech synthesis on load
+            console.log('Testing speech synthesis...');
+            if ('speechSynthesis' in window) {
+                console.log('Speech synthesis is supported');
+                const testUtterance = new SpeechSynthesisUtterance('Test speech synthesis');
+                testUtterance.onend = function() {
+                    console.log('Test speech synthesis completed successfully');
+                };
+                testUtterance.onerror = function(event) {
+                    console.error('Test speech synthesis failed:', event);
+                };
+                // Don't actually speak the test, just log that it's available
+            } else {
+                console.error('Speech synthesis is NOT supported');
+            }
+        });
+    </script>
+</body>
+</html>
